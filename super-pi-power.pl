@@ -169,7 +169,7 @@ print '<button type="submit" name="action" value="status">Status</button>';
 print '</form>';
 print "</center>";
 print "<br /><br /><br />";
-print "Version: $version on: $ENV{'HTTP_HOST'} running: $ENV{SERVER_SOFTWARE}";
+print "<i>Version: $version on: $ENV{'HTTP_HOST'} running: $ENV{SERVER_SOFTWARE}</i>";
 print '</div>';
 print "</body>";
 print "</html>";
