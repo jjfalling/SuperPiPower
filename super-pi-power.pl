@@ -145,8 +145,8 @@ if ($numOfOutlets >= "2")
 
 }
 
-print '<br /><button type="submit" name="action" value="on">On</button>';
-print '<button type="submit" name="action" value="off">Off</button>';
+print '<br /><button type="submit" name="action" value="on">On</button> ';
+print '<button type="submit" name="action" value="off">Off</button> ';
 print '<button type="submit" name="action" value="status">Status</button>';
 print '</form>';
 print "</center>";
