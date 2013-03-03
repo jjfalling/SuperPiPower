@@ -1,4 +1,11 @@
 Super Pi Power!
 
-This is a perl cgi that is meant to run on the Raspberry Pi and turns gpio pins on and off to control relays attached to outlets. 
-There are only two options that need to be set by the user, $mode which sets the type or configuration of your relay and @outlets which is an array of pins that are attached to relays. 
+This is a perl cgi that is meant to run on the Raspberry Pi and turns gpio pins on and off
+to control relays attached to outlets. It does not use the bcm2835 perl library. 
+
+There are only two options that need to be set by the user:
+$mode which sets the type or configuration of your relay
+@outlets which is an array of pins that are attached to relays
+
+The interface is a very basic html web page that should work with any device with a modern
+web browser. 

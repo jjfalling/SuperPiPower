@@ -4,7 +4,7 @@ use warnings;
 
 #############################################################################
 #Super Pi Power! - Jeremy Falling 2013	
-#Used to operate relays connected to specified pins. Does not use the bcm2835 perl libray.
+#Used to operate relays connected to specified pins. Does not use the bcm2835 perl library.
 
 #############################################################################
 ###Start user options
