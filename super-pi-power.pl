@@ -100,8 +100,10 @@ else
 
 #Send some headers
 print "Content-type:text/html\r\n\r\n";
-print "<html>";
+print '<!DOCTYPE HTML SYSTEM>';
+print '<html>';
 print "<head>";
+print '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">';
 print "<title>Super Pi Power!</title>";
 print "</head>";
 print "<body>";
@@ -111,7 +113,7 @@ print '<h1>Super Pi Power!</h1> <hr width="260px">';
 #Check if we are processing a post, if not then don't print action preformed or attempt to do anything
 if ($ENV{'REQUEST_METHOD'} eq "POST")
 {    
-	print "Action preformed: Outlet: $outlet Action: $action <br />";
+	print "Action preformed: Outlet: $outlet Action: $action <br>";
 	
 	#preform sanity check
 	if ($outlet <= 0 or $outlet > $numOfOutlets )
@@ -146,8 +148,8 @@ if ($ENV{'REQUEST_METHOD'} eq "POST")
 	}
 }
 print "<form name=\"powerAction\" action=\"http://$ENV{'HTTP_HOST'}$ENV{'REQUEST_URI'}\" method=\"POST\">";
-print '<br />';
-print '<input type="radio" name="outlet" value="1" checked> Outlet 1<br />';
+print '<br>';
+print '<input type="radio" name="outlet" value="1" checked> Outlet 1<br>';
 
 #if there is more then one outlet, autogenerate the outlet radios for the remaining outlets
 if ($numOfOutlets >= "2")
@@ -157,22 +159,22 @@ if ($numOfOutlets >= "2")
 
 	while ($i < $max)
 	{
-		print "<input type=\"radio\" name=\"outlet\" value=\"$i\"> Outlet 2<br />";
+		print "<input type=\"radio\" name=\"outlet\" value=\"$i\"> Outlet 2<br>";
 		$i++;
 	}
 
 }
 
-print '<br /><button type="submit" name="action" value="on">On</button> ';
+print '<br><button type="submit" name="action" value="on">On</button> ';
 print '<button type="submit" name="action" value="off">Off</button> ';
 print '<button type="submit" name="action" value="status">Status</button>';
 print '</form>';
 print "</center>";
-print "<br /><br /><br />";
+print "<br><br><br>";
 print "<i>Version: $version on: $ENV{'HTTP_HOST'} running: $ENV{SERVER_SOFTWARE}</i>";
-print '</div>';
 print "</body>";
 print "</html>";
 
 
 1;
+
