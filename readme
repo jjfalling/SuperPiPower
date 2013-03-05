@@ -1,6 +1,6 @@
 Super Pi Power!
 
-This is a perl cgi that is meant to run on the Raspberry Pi and turns gpio pins on and off to control relays attached to outlets. It does not use the bcm2835 perl library and is developed under nginx with perl-fcgi.
+This is a perl cgi that is meant to run on the Raspberry Pi and turns gpio pins on and off to control relays attached to outlets. It modifies the gpio linux device instead of using the bcm2835 perl library and is developed under nginx with perl-fcgi.
 I use sudo and the following sudoers entry to allow the webserver to modify the gpio pins:
 www-data        ALL=(ALL) NOPASSWD:/bin/bash -c echo * > /sys/class/gpio/*
 
