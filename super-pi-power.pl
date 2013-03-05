@@ -146,6 +146,10 @@ if ($ENV{'REQUEST_METHOD'} eq "POST")
 		{ 
 			$currentStatus = `sudo bash -c 'echo "$off" > /sys/class/gpio/gpio$curPin/value'`;
 		}
+		else
+                {
+                        print 'ERROR: Invalid action requested<br>';
+                }
 	}
 }
 print "<form name=\"powerAction\" action=\"http://$ENV{'HTTP_HOST'}$ENV{'REQUEST_URI'}\" method=\"POST\">";
