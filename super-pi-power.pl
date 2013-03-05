@@ -27,6 +27,7 @@ use warnings;
 ###Start user options
 
 #Define pins in order, so the first item in the array is outlet 1, second item is outlet 2, etc
+#I don't do any sanity checking for this, so get it right ;-)
 my @outlets = ('23', '24');
 
 #If your relay is set to NC, use 1, if NO, use 0
@@ -159,7 +160,7 @@ if ($numOfOutlets >= "2")
 
 	while ($i < $max)
 	{
-		print "<input type=\"radio\" name=\"outlet\" value=\"$i\"> Outlet 2<br>";
+		print "<input type=\"radio\" name=\"outlet\" value=\"$i\"> Outlet $i<br>";
 		$i++;
 	}
 
