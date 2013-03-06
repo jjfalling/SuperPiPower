@@ -33,6 +33,9 @@ my @outlets = ('23', '24');
 #If your relay is set to NC, use 1, if NO, use 0
 my $mode = 1;
 
+#Are you using https? Are you behind an https proxy? Then set this to true
+my $https = "false";
+
 
 ### End user options  (**STOP EDITING!**)
 #############################################################################
@@ -40,9 +43,9 @@ my $mode = 1;
 
 
 my $progamName = "Super Pi Power!";
-my $version = "1.0";
+my $version = "1.1";
 
-my ($on, $off, $reqPin, $curPin, $currentStatus, $junk);
+my ($on, $off, $reqPin, $curPin, $currentStatus, $junk, $url);
 my ( $buffer, @pairs, $pair, $name, $value, %FORM);
 
 # Read in text from post
@@ -69,6 +72,9 @@ foreach $pair (@pairs)
 my $outlet = $FORM{outlet};
 my $action = $FORM{action};
 
+#To prevent errors, make outlet=0 if not defined (since 0 is not a valid outlet)
+if (!defined $outlet) {$outlet = "0";}
+
 #get the number of outlets in the array
 my $numOfOutlets = $#outlets + 1;
 
@@ -86,30 +92,37 @@ if ($ENV{'REQUEST_METHOD'} eq "POST")
 	
 }
 
+#get url
+if ($https eq "true") {
+$url="https://$ENV{'HTTP_HOST'}$ENV{'REQUEST_URI'}";
+}
+else {
+$url="http://$ENV{'HTTP_HOST'}$ENV{'REQUEST_URI'}";
+}
+
+
 #Check to see what the mode is, and set on/off values accordingly
-if ($mode == 1)
-{
+if ($mode == 1){
 	$on = 0;
 	$off = 1;
 }
 
-else
-{
+else{
 	$on = 1;
 	$off = 0;
 }
 
 #Send some headers
 print "Content-type:text/html\r\n\r\n";
-print '<!DOCTYPE HTML SYSTEM>';
-print '<html>';
-print "<head>";
-print '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">';
-print "<title>Super Pi Power!</title>";
-print "</head>";
-print "<body>";
-print "<center>";
-print '<h1>Super Pi Power!</h1> <hr width="260px">';
+print '<!DOCTYPE HTML SYSTEM>' . "\n";
+print '<html>' . "\n";
+print '<head>' . "\n";
+print '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">' . "\n";
+print '<title>Super Pi Power!</title>' . "\n";
+print '</head>' . "\n";
+print '<body>' . "\n";
+print '<center>' . "\n";
+print '<h1>Super Pi Power!</h1> <hr width="260px">' . "\n";
 
 #Check if we are processing a post, if not then don't print action preformed or attempt to do anything
 if ($ENV{'REQUEST_METHOD'} eq "POST")
@@ -148,36 +161,48 @@ if ($ENV{'REQUEST_METHOD'} eq "POST")
 		}
 		else
                 {
+<<<<<<< HEAD
                         print 'ERROR: Invalid action requested<br>';
+=======
+			print 'ERROR: Invalid action requested<br>';
+>>>>>>> v1.1
                 }
 	}
 }
-print "<form name=\"powerAction\" action=\"http://$ENV{'HTTP_HOST'}$ENV{'REQUEST_URI'}\" method=\"POST\">";
+print "<form name=\"powerAction\" action=\"$url\" method=\"POST\">" . "\n";
 print '<br>';
-print '<input type="radio" name="outlet" value="1" checked> Outlet 1<br>';
 
-#if there is more then one outlet, autogenerate the outlet radios for the remaining outlets
-if ($numOfOutlets >= "2")
+#Auto generate the outlet options
+for ($numOfOutlets)
 {
-	my $i = 2;
+	my $i = 1;
 	my $max = $numOfOutlets + 1;
 
 	while ($i < $max)
 	{
+<<<<<<< HEAD
 		print "<input type=\"radio\" name=\"outlet\" value=\"$i\"> Outlet $i<br>";
+=======
+		print "<input type=\"radio\" name=\"outlet\" value=\"$i\"";
+		#If an action was requested for this outlet id, print checked.  
+		if ( $i == $outlet) {print "checked";}
+		print "> Outlet $i<br>" . "\n";
+>>>>>>> v1.1
 		$i++;
 	}
 
 }
 
-print '<br><button type="submit" name="action" value="on">On</button> ';
-print '<button type="submit" name="action" value="off">Off</button> ';
-print '<button type="submit" name="action" value="status">Status</button>';
-print '</form>';
-print "</center>";
-print "<br><br><br>";
-print "<i>Version: $version on: $ENV{'HTTP_HOST'} running: $ENV{SERVER_SOFTWARE}</i>";
-print "</body>";
+print '<br><button type="submit" name="action" value="on">On</button> '. "\n";
+print '<button type="submit" name="action" value="off">Off</button> '. "\n";
+print '<button type="submit" name="action" value="status">Status</button>' . "\n";
+print '</form>'. "\n";
+print "</center>\n";
+print "<br><br><br>\n";
+print "<i>Version: $version on: $ENV{'HTTP_HOST'} running: $ENV{SERVER_SOFTWARE}</i> <br>" . "\n";
+print "<a href=\"$url\">Reset page</a>";
+
+print "</body>\n";
 print "</html>";
 
 
