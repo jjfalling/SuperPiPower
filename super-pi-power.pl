@@ -161,11 +161,9 @@ if ($ENV{'REQUEST_METHOD'} eq "POST")
 		}
 		else
                 {
-<<<<<<< HEAD
+
                         print 'ERROR: Invalid action requested<br>';
-=======
 			print 'ERROR: Invalid action requested<br>';
->>>>>>> v1.1
                 }
 	}
 }
@@ -180,14 +178,12 @@ for ($numOfOutlets)
 
 	while ($i < $max)
 	{
-<<<<<<< HEAD
+
 		print "<input type=\"radio\" name=\"outlet\" value=\"$i\"> Outlet $i<br>";
-=======
 		print "<input type=\"radio\" name=\"outlet\" value=\"$i\"";
 		#If an action was requested for this outlet id, print checked.  
 		if ( $i == $outlet) {print "checked";}
 		print "> Outlet $i<br>" . "\n";
->>>>>>> v1.1
 		$i++;
 	}
 
