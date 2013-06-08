@@ -179,7 +179,6 @@ for ($numOfOutlets)
 	while ($i < $max)
 	{
 
-		print "<input type=\"radio\" name=\"outlet\" value=\"$i\"> Outlet $i<br>";
 		print "<input type=\"radio\" name=\"outlet\" value=\"$i\"";
 		#If an action was requested for this outlet id, print checked.  
 		if ( $i == $outlet) {print "checked";}
