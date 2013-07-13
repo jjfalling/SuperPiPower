@@ -31,10 +31,10 @@ my $configFile = "superPiPower.cfg";
 
 #define program info
 my $progamName = "Super Pi Power!";
-my $version = "2.0";
+my $version = "2.1";
 
 
-my ($on, $off, $reqPin, $curPin, $currentStatus, $junk, $url, $config, $key, $value, $last_key, $buffer, @pairs, $pair, $name, %FORM, $configError);
+my ($on, $off, $reqPin, $curPin, $currentStatus, $junk, $url, $config, $key, $value, $last_key, $buffer, @pairs, $pair, $name, %FORM, $configError, $invert);
 
 
 #Send some headers
@@ -78,8 +78,7 @@ else {
 
 # Read in text from post
 $ENV{'REQUEST_METHOD'} =~ tr/a-z/A-Z/;
-if ($ENV{'REQUEST_METHOD'} eq "POST")
-{
+if ($ENV{'REQUEST_METHOD'} eq "POST") {
 	read(STDIN, $buffer, $ENV{'CONTENT_LENGTH'});
 }
 else {
@@ -88,8 +87,7 @@ else {
 
 # Split information into name/value pairs
 @pairs = split(/&/, $buffer);
-foreach $pair (@pairs)
-{
+foreach $pair (@pairs){
 	($name, $value) = split(/=/, $pair);
 	$value =~ tr/+/ /;
 	$value =~ s/%(..)/pack("C", hex($1))/eg;
@@ -173,13 +171,12 @@ else {
 	my $numOfOutlets = $#outlets + 1;
 
 	#if a post was made, get the gpio pin for the requested outlet
-	if ($ENV{'REQUEST_METHOD'} eq "POST")
-	{
+	if ($ENV{'REQUEST_METHOD'} eq "POST"){
 		$reqPin = $outlet - 1;
 		$curPin = $outlets[$reqPin];
 	
 		#Setup current pin. What we do here is see if folder for the pin exists. If it does not then the pin has not been set up.
-		unless (-e "/sys/class/gpio/gpio$curPin") {
+		unless (-e "/sys/class/gpio/gpio$curPin"){
 			system("sudo bash -c 'echo \"$curPin\" > /sys/class/gpio/export'");
 			system("sudo bash -c 'echo \"out\" > /sys/class/gpio/gpio$curPin/direction'");
 		} 
@@ -200,58 +197,57 @@ else {
 
 
 	#Check if we are processing a post, if not then don't print action preformed or attempt to do anything
-	if ($ENV{'REQUEST_METHOD'} eq "POST")
-	{    
+	if ($ENV{'REQUEST_METHOD'} eq "POST"){    
 		print "Action preformed: Outlet: $outlet Action: $action <br>";
 	
 		#preform sanity check
-		if ($outlet <= 0 or $outlet > $numOfOutlets )
-		{
+		if ($outlet <= 0 or $outlet > $numOfOutlets ){
 			print "ERROR: Outlet $outlet is not within valid range";
 		}
 
-		else
-		{
+		else{
 			#check if status was requested, if so get the status of outlet
-			if ($action eq "status")
-			{ 
+			if ($action eq "status"){ 
 				$currentStatus = `cat /sys/class/gpio/gpio$curPin/value`;
 				print "Current status of outlet $outlet: ";
-				if ($currentStatus == $on) 
-				{
-				print "ON";
+				if ($currentStatus == $on){
+					print "ON";
 				}
-				else
-				{
-				print "OFF";
+				else{
+					print "OFF";
 				}
 			}
-			elsif ($action eq "on")
-			{ 
+			elsif ($action eq "on"){ 
 				$currentStatus = `sudo bash -c 'echo "$on" > /sys/class/gpio/gpio$curPin/value'`;
 			}
-			elsif ($action eq "off")
-			{ 
+			elsif ($action eq "off"){ 
 				$currentStatus = `sudo bash -c 'echo "$off" > /sys/class/gpio/gpio$curPin/value'`;
 			}
-			else
-					{
-							print 'ERROR: Invalid action requested<br>';
+			#for more of an api functionality. to flip the state of an outlet
+			elsif ($action eq "invert"){ 
+				my $currentStatus = `cat /sys/class/gpio/gpio$curPin/value`;
+				#if outlet is on, turn off, and vica versa
+				if ($currentStatus == $on){
+					$currentStatus = `sudo bash -c 'echo "$off" > /sys/class/gpio/gpio$curPin/value'`;
+				}
+				else{
+					`sudo bash -c 'echo "$on" > /sys/class/gpio/gpio$curPin/value'`;
+				}
+			}
+			else{
 				print 'ERROR: Invalid action requested<br>';
-					}
+			}
 		}
 	}
 	print "<form name=\"powerAction\" action=\"$url\" method=\"POST\">" . "\n";
 	print '<br><table border="0">';
 
 	#Auto generate the outlet options
-	for ($numOfOutlets)
-	{
+	for ($numOfOutlets){
 		my $i = 1;
 		my $max = $numOfOutlets + 1;
 
-		while ($i < $max)
-		{
+		while ($i < $max){
 			my $currentName = $i - 1;
 		
 			print "<tr><td><input type=\"radio\" name=\"outlet\" value=\"$i\"";
@@ -270,8 +266,6 @@ else {
 	print '</form>';
 
 }
-
-
 
 print "</center>\n";
 print "<br><br><br>\n";
@@ -296,6 +290,4 @@ sub generateConfigFile{
 		die;
 	}
 
-
 }
-
