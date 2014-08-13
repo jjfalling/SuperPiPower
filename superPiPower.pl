@@ -247,15 +247,15 @@ else {
 		my $i = 1;
 		my $max = $numOfOutlets + 1;
 
-		while ($i < $max){
-			my $currentName = $i - 1;
-		
-			print "<tr><td><input type=\"radio\" name=\"outlet\" value=\"$i\"";
-			#If an action was requested for this outlet id, print checked.  
-			if ( $i == $outlet) {print "checked";}
-			print "></td><td>Outlet $i - $outletNames[$currentName]</td></tr>" . "\n";
-			$i++;
-		}
+                while ($i < $max){
+                        my $currentName = $i - 1;
+
+                        print "<tr><td><input type=\"radio\" id=\"$i\" name=\"outlet\" value=\"$i\"";
+                        #If an action was requested for this outlet id, print checked.
+                        if ( $i == $outlet) {print "checked";}
+                        print "></td><td><label for=\"$i\">Outlet $i - $outletNames[$currentName]</label></td></tr>" . "\n";
+                        $i++;
+                }
 
 	}
 
