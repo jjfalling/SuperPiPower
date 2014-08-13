@@ -31,7 +31,7 @@ my $configFile = "superPiPower.cfg";
 
 #define program info
 my $progamName = "Super Pi Power!";
-my $version = "2.1";
+my $version = "2.2";
 
 
 my ($on, $off, $reqPin, $curPin, $currentStatus, $junk, $url, $config, $key, $value, $last_key, $buffer, @pairs, $pair, $name, %FORM, $configError, $invert);
