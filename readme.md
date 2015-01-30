@@ -15,8 +15,8 @@ On fist run it will generate a config file so the webserver will need to write t
 There are only four options that need to be set by the user in the webui.
 * $mode which sets the type or configuration of your relay (NO or NC)
 * $https which changes the links to use https instead of http. DO NOT set this unless you are behind a https server or the links will break! You can reset this in the config file by setting https=false
-* @outlets is a list of pins connected to outlets. The first pin is outlet 1, etc. 
-* @outletNames is a list of names for each outlet or name. They are 1:1 to the pins. 
+* @outlets is a comma separated list of pins connected to outlets. The first pin is outlet 1, etc. 
+* @outletNames is a comma separated list of names for each outlet or name. They are 1:1 to the pins. 
 
 
 See http://youtu.be/PVTMCSnzGkk for a demo of it in action. 
