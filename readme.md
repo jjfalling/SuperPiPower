@@ -5,6 +5,7 @@ It modifies the gpio linux device instead of using the bcm2835 perl library and 
 The interface is a very basic html web page that should work with any device with a modern web browser. 
 
 Requires Config::Simple.
+
 The webserver or cgi user must have read access to /sys/class/gpio/. Sometimes this just works, sometimes you need to add the user to the gpio group.
 
 For write access I use sudo and the following sudoers entry to allow the webserver to modify the gpio pins:
