@@ -89,7 +89,7 @@ foreach $pair (@pairs) {
 
 #store the requested outlet and action
 my $outlet = $FORM{outlet};
-my $action = $FORM{action};
+my $action = $FORM{action} || 'none';
 
 if ( $action eq "settings" ) {
 
@@ -175,7 +175,8 @@ else {
 
         #in some cases normal users cannot read the gpio dir. if this is the case, bail
         unless ( -r "/sys/class/gpio/" ) {
-            print "ERROR: cannot read /sys/class/gpio/! Ensure the webserver user can read this directory (such as add to the gpio group)";
+            print "ERROR: cannot read /sys/class/gpio/! Ensure the webserver user can read this directory.<br><br>";
+            print "Newer versions of Raspbian set the group owner of /sys/class/gpio/ to 'gpio' instead of root. Add the webserver user to this group.";
             exit 1;
         }
 
@@ -200,6 +201,8 @@ else {
 
     #Check if we are processing a post, if not then don't print action preformed or attempt to do anything
     if ( $ENV{'REQUEST_METHOD'} eq "POST" ) {
+        my $result;
+
         print "Action preformed: Outlet: $outlet Action: $action <br>";
 
         #preform sanity check
@@ -220,10 +223,10 @@ else {
                 }
             }
             elsif ( $action eq "on" ) {
-                $currentStatus = `sudo bash -c 'echo "$on" > /sys/class/gpio/gpio$curPin/value'`;
+                $result = `sudo bash -c 'echo "$on" > /sys/class/gpio/gpio$curPin/value 2>&1'`;
             }
             elsif ( $action eq "off" ) {
-                $currentStatus = `sudo bash -c 'echo "$off" > /sys/class/gpio/gpio$curPin/value'`;
+                $result = `sudo bash -c 'echo "$off" > /sys/class/gpio/gpio$curPin/value 2>&1'`;
             }
 
             #for more of an api functionality. to flip the state of an outlet
@@ -232,15 +235,23 @@ else {
 
                 #if outlet is on, turn off, and vica versa
                 if ( $currentStatus == $on ) {
-                    $currentStatus = `sudo bash -c 'echo "$off" > /sys/class/gpio/gpio$curPin/value'`;
+                    $result = `sudo bash -c 'echo "$off" > /sys/class/gpio/gpio$curPin/value 2>&1'`;
                 }
                 else {
-                    `sudo bash -c 'echo "$on" > /sys/class/gpio/gpio$curPin/value'`;
+                    $result = `sudo bash -c 'echo "$on" > /sys/class/gpio/gpio$curPin/value 2>&1'`;
                 }
             }
             else {
                 print 'ERROR: Invalid action requested<br>';
             }
+
+            #ensure the write request worked
+            if ( $? != 0 ) {
+                print "ERROR: action failed! Exit code: $?, error (if any): $result";
+                print "<br><br>Ensure the webserver user has permission to modify the gpio pins";
+
+            }
+
         }
     }
     print "<form name=\"powerAction\" action=\"$url\" method=\"POST\">" . "\n";
